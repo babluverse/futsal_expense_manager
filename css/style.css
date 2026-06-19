@@ -1,0 +1,256 @@
+/* ── Reset ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Variables ── */
+:root {
+  --bg-primary: #0f1923;
+  --bg-card: #1a2633;
+  --bg-input: #1e2d3d;
+  --green: #00e676;
+  --green-dim: rgba(0, 230, 118, 0.12);
+  --red: #ff1744;
+  --red-dim: rgba(255, 23, 68, 0.12);
+  --text-primary: #ffffff;
+  --text-muted: #7f8c9a;
+  --border: rgba(255, 255, 255, 0.07);
+  --transition: all 0.2s ease;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* ── Header ── */
+.app-header {
+  background-color: var(--bg-card);
+  border-bottom: 2px solid var(--green);
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.tagline {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Sections common ── */
+.fee-section,
+.player-section,
+.summary-section {
+  max-width: 480px;
+  margin: 24px auto 0;
+  padding: 0 16px;
+}
+
+/* ── Fee Input ── */
+.fee-section label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.fee-section input {
+  width: 100%;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+}
+
+.fee-section input:focus {
+  border-color: var(--green);
+}
+
+/* ── Add Player Row ── */
+.add-player-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.add-player-row input {
+  flex: 1;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+}
+
+.add-player-row input:focus {
+  border-color: var(--green);
+}
+
+#add-player-btn {
+  background-color: var(--green);
+  color: #0f1923;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+#add-player-btn:hover {
+  background-color: #00c853;
+}
+
+/* ── Player List ── */
+#player-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.player-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+.player-amount {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+/* ── Paid / Due Toggle ── */
+.status-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.status-btn.paid {
+  background-color: var(--green-dim);
+  color: var(--green);
+}
+
+.status-btn.due {
+  background-color: var(--red-dim);
+  color: var(--red);
+}
+
+/* ── Remove Button ── */
+.remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: var(--transition);
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  color: var(--red);
+}
+
+/* ── Summary Cards ── */
+.summary-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.summary-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.summary-card span {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.summary-card strong {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.summary-card.green {
+  border-color: rgba(0, 230, 118, 0.3);
+}
+
+.summary-card.green strong {
+  color: var(--green);
+}
+
+.summary-card.red {
+  border-color: rgba(255, 23, 68, 0.3);
+}
+
+.summary-card.red strong {
+  color: var(--red);
+}
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  .app-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .summary-card strong {
+    font-size: 0.88rem;
+  }
+}
