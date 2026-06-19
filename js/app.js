@@ -10,6 +10,20 @@ const totalDueEl = document.getElementById('total-due');
 // ── State ──
 let players = [];
 
+// ── LocalStorage ──
+function saveToStorage() {
+  localStorage.setItem('futsal_players', JSON.stringify(players));
+  localStorage.setItem('futsal_fee', turfFeeInput.value);
+}
+
+function loadFromStorage() {
+  const savedPlayers = localStorage.getItem('futsal_players');
+  const savedFee = localStorage.getItem('futsal_fee');
+
+  if (savedPlayers) players = JSON.parse(savedPlayers);
+  if (savedFee) turfFeeInput.value = savedFee;
+}
+
 // ── Calculate & Render Summary ──
 function updateSummary() {
   const totalFee = parseFloat(turfFeeInput.value) || 0;
@@ -40,6 +54,16 @@ function renderPlayers() {
   const count = players.length;
   const perPerson = count > 0 ? Math.ceil(totalFee / count) : 0;
 
+  if (count === 0) {
+    playerList.innerHTML = `
+      <li class="empty-state">
+        No players yet. Add your squad above!
+      </li>
+    `;
+    updateSummary();
+    return;
+  }
+
   players.forEach((player, index) => {
     const li = document.createElement('li');
     li.classList.add('player-item');
@@ -48,15 +72,16 @@ function renderPlayers() {
       <span class="player-name">${player.name}</span>
       <span class="player-amount">Rs. ${perPerson}</span>
       <button class="status-btn ${player.paid ? 'paid' : 'due'}" data-index="${index}">
-        ${player.paid ? 'Paid' : 'Due'}
+        ${player.paid ? 'Paid ✓' : 'Due'}
       </button>
-      <button class="remove-btn" data-index="${index}">✕</button>
+      <button class="remove-btn" data-index="${index}" title="Remove">✕</button>
     `;
 
     playerList.appendChild(li);
   });
 
   updateSummary();
+  saveToStorage();
 }
 
 // ── Add Player ──
@@ -65,6 +90,16 @@ function addPlayer() {
 
   if (!name) {
     playerNameInput.focus();
+    return;
+  }
+
+  // duplicate check
+  const exists = players.some(
+    p => p.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (exists) {
+    playerNameInput.select();
     return;
   }
 
@@ -86,6 +121,15 @@ function removePlayer(index) {
   renderPlayers();
 }
 
+// ── Reset All ──
+function resetAll() {
+  if (players.length === 0) return;
+  players = [];
+  turfFeeInput.value = '';
+  localStorage.clear();
+  renderPlayers();
+}
+
 // ── Event Listeners ──
 addPlayerBtn.addEventListener('click', addPlayer);
 
@@ -93,7 +137,10 @@ playerNameInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') addPlayer();
 });
 
-turfFeeInput.addEventListener('input', renderPlayers);
+turfFeeInput.addEventListener('input', () => {
+  saveToStorage();
+  renderPlayers();
+});
 
 playerList.addEventListener('click', (e) => {
   const index = parseInt(e.target.dataset.index);
@@ -106,3 +153,7 @@ playerList.addEventListener('click', (e) => {
     removePlayer(index);
   }
 });
+
+// ── Init ──
+loadFromStorage();
+renderPlayers();
